@@ -1,0 +1,11 @@
+{
+    "name": "09_CAT_Deep_Think",
+    "version": "1.9.0",
+    "description": "Tool per mettere l'agente nelle condizioni di criticare le sue scelte",
+    "author_name": "Elio Errico",
+    "author_url": "https://github.com/ElioErrico",
+    "plugin_url": "https://github.com/ElioErrico/09_CAT_Deep_Think",
+    "tags": "cat, deep think, agent, search, react",
+    "thumb": "https://raw.githubusercontent.com/ElioErrico/09_CAT_Deep_Think/main/Deep_Think.png"
+  }
+  
