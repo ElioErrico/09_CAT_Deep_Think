@@ -129,13 +129,15 @@ Be honest and critical - the goal is to improve reasoning, not to justify existi
         return f"Deep thinking process encountered an error: {str(e)}. Continuing with current approach."
 
 
-@hook   #default priority = 10 
+@hook  # default priority = 1 
 def before_cat_reads_message(user_message_json, cat):
-
+    """
+    Hook che aggiunge un prompt di pianificazione a tutti i messaggi quando il tool è abilitato.
+    Questo garantisce che la prima azione dell'agente sia sempre la pianificazione.
+    """
     settings = cat.mad_hatter.get_plugin().load_settings()
-    tool_key = settings["tool_name"] 
+    tool_key = settings["tool_name"]    
     
-      
     # ---- Guard: abilita/disabilita tool per utente; fallback=False ----
     try:
         with open("cat/static/tools_status.json", "r", encoding="utf-8") as f:
@@ -150,20 +152,15 @@ def before_cat_reads_message(user_message_json, cat):
           .get("user_id_tool_status", {})
           .get(uid, False)
     )
-    
+    cat.send_ws_message(f"Tool {tool_key} enabled for user {uid}","chat")
     if not enabled:
-    #     cat.send_ws_message(
-    #     f"🔍 We are outside",
-    #     "chat"
-    # )
+        cat.send_ws_message(f"Tool {tool_key} not enabled for user {uid}","chat")
         return user_message_json
 
-    # cat.send_ws_message(
-    #     f"🔍 You are using the tool {tool_key}.",
-    #     "chat"
-    # )
+    # Prompt di pianificazione che verrà aggiunto a tutte le richieste
+    planning_phase_prompt = """\n - Devi usare il tool 'deep_think' almeno 1 volta. Usalo quando pensi che potrebbe aiutarti di più nella tua analisi."""
 
-    user_message_json["text"] = user_message_json["text"] + """You must use the tool 'deep_think' at least on time. 
-    Use it when you think it could better help your analisys."""
+    user_message_json["text"] = user_message_json["text"] + planning_phase_prompt
+    return user_message_json
 
     return user_message_json
