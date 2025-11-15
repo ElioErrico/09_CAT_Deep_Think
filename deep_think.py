@@ -154,9 +154,9 @@ def before_cat_reads_message(user_message_json, cat):
           .get("user_id_tool_status", {})
           .get(uid, False)
     )
-    cat.send_ws_message(f"Tool {tool_key} enabled for user {uid}","chat")
+    # cat.send_ws_message(f"Tool {tool_key} enabled for user {uid}","chat")
     if not enabled:
-        cat.send_ws_message(f"Tool {tool_key} not enabled for user {uid}","chat")
+        # cat.send_ws_message(f"Tool {tool_key} not enabled for user {uid}","chat")
         return user_message_json
 
     # Prompt di pianificazione che verrà aggiunto a tutte le richieste
@@ -164,3 +164,4 @@ def before_cat_reads_message(user_message_json, cat):
 
     user_message_json["text"] = user_message_json["text"] + planning_phase_prompt
     return user_message_json
+
